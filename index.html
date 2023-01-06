@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie List</title>
+
+  <!-- Bootstrap CSS載入 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+  <!-- Bootstrap Navbar bar元件 導覽列 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Movie List</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- 共兩個item -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Home item -->
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <!-- Favorite item -->
+          <li class="nav-item">
+            <a class="nav-link" href="#">Favorite</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 做一個container 並與上方Nav bar距離 mt-5 margin padding 5-->
+  <div class="container mt-5">
+
+    <!-- row1 -->
+    <div class="row">
+      <!-- Bootstrap Search bar元件 搜尋欄-->
+      <form class="row row-cols-lg-auto g-3 align-items-center mb-2" id="search-form">
+        <div class="col-12">
+          <!-- 螢幕閱讀器看的 -->
+          <label class="visually-hidden" for="search-input">
+            search keyword
+          </label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="search-input" placeholder="keyword..." />
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" id="search-submit-button">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- JS渲染80部影片需要重複的結構頭 -->
+    <!-- row2 -->
+    <div class="row" id="data-panel">
+      <!-- Render Movie List -->
+      <div class="col-sm-3">
+        <div class="mb-2">
+
+          <!-- Bootstrap Card元件 -->
+          <div class="card" style="width: 18rem;">
+            <!-- 卡片照片 -->
+            <img
+              src="https://raw.githubusercontent.com/ALPHACamp/movie-list-api/master/public/posters/80PWnSTkygi3QWWmJ3hrAwqvLnO.jpg"
+              class="card-img-top" alt="Movie Poster" />
+            <div class="card-body">
+              <h5 class="card-title">Movie title</h5>
+            </div>
+
+            <div class="card-footer text-muted">
+              <!-- 給button設定 toggle target-->
+              <!-- 這個id movie-modal要讓Bootstrap Modal元件吃到才能點擊打開-->
+              <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal" data-bs-target="#movie-modal">
+                More
+              </button> <!-- 卡片More按鈕 -->
+              <button class="btn btn-info btn-add-favorite">+</button> <!-- 卡片+按鈕 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- JS渲染80部影片需要重複的結構尾 -->
+  </div>
+
+  <!-- Navbar / Container(search+card)/ pagination屬於同一層 -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center" id="paginator">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav>
+
+  <!-- Bootstrap Modal元件 點擊按鈕翻開頁面 -->
+  <!-- Movie Modal 因為上面按鈕已經有設定 toggle target Bootstrap原本的button可以刪除-->
+  <!-- 這個id movie-modal要讓Bootstrap Modal元件吃到才能點擊打開-->
+  <div class="modal fade" id="movie-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="movie-modal-title">Modal title</h5> <!-- 自訂id  -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="movie-modal-body">
+          <!-- 自訂id -->
+          <div class="row"> <!-- 在點擊more跑出的視窗中設定左右切分畫面 -->
+            <div class="col-sm-8" id="movie-modal-image"> <!-- 比例佔8 -->
+              <!-- 左邊的圖img -->
+              <img src="https://webdev.alphacamp.io/posters/c9XxwwhPHdaImA2f1WEfEsbhaFB.jpg" alt="movie-poster" class="img-fluid">
+            </div> 
+            <div class="col-sm-4"> <!-- 比例佔4 -->
+              <p><em id="movie-modal-date"></em>relase date: 2020/01/05</p> <!-- 比例佔4 是上面時間 -->
+              <p id="movie-modal-description">This is a movie</p> <!-- 比例佔4 是下面電影敘述 -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- axios載入 -->
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <!-- Bootstrap JS載入 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <!-- JS載入(自己建立的檔案) -->
+    <script src="./index.js"></script>
+</body>
+
+</html>
