@@ -4,7 +4,7 @@
 
 CodePen URL : 
 
-GitHub：
+GitHub：https://bobyin22.github.io/movie-list/#
 
 網頁說明：
 
